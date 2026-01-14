@@ -7,20 +7,28 @@ generateBtn.addEventListener("click", async () => {
   const number = document.getElementById("number").value;
 
   if (!topic || !style || !number) {
-    alert("Fill all fields");
+    alert("Please fill all fields");
     return;
   }
 
-  resultBox.textContent = "Generating...";
+  // Show loading text
+  resultBox.textContent = "Vickmum is thinking...";
 
-  const response = await fetch("/api/generate", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ topic, style, number })
-  });
+  try {
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ topic, style, number }),
+    });
 
-  const data = await response.json();
-  resultBox.textContent = data.result;
+    const data = await response.json();
+
+    // Show AI result
+    resultBox.textContent = data.result;
+  } catch (error) {
+    console.error(error);
+    resultBox.textContent = "Something went wrong. Try again.";
+  }
 });

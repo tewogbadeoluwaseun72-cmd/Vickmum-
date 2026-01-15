@@ -17,17 +17,19 @@ generateBtn.addEventListener("click", async () => {
     const response = await fetch("/api/generate", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ topic, style, number })
+      body: JSON.stringify({ topic, style, number }),
     });
 
     const data = await response.json();
 
-    // THIS IS THE IMPORTANT LINE
-    resultBox.innerHTML = data.result.replace(/\n/g, "<br>");
-
+    if (data.result) {
+      resultBox.innerHTML = data.result.replace(/\n/g, "<br>");
+    } else {
+      resultBox.innerHTML = "Something went wrong 😢";
+    }
   } catch (error) {
-    resultBox.innerHTML = "Something went wrong 😢";
+    resultBox.innerHTML = "Server error 😭";
   }
 });
